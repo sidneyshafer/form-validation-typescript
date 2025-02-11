@@ -30,17 +30,25 @@ const getFieldName = (input: HTMLInputElement): string => {
     return input.id.charAt(0).toUpperCase() + input.id.slice(1);
 }
 
-const validateUsername = (): void => {
-    const input = username.value.trim();
-    if (input.length < 3) {
-        showError(username, 'Username must be at least 3 characters');
+const checkLength = (input: HTMLInputElement, minLength: number, maxLength: number) => {
+    const value = input.value.trim();
+    const name = getFieldName(input);
+
+    if (value.length < minLength) {
+        showError(input, `${name} must be at least ${minLength} characters`);
         return;
-    } else if (input.length > 15) {
-        showError(username, 'Username must be less than 15 characters');
-        return;
-    } else {
-        showSuccess(username);
     }
+
+    if (value.length > maxLength) {
+        showError(input, `${name} must be less than ${maxLength} characters`);
+        return;
+    }
+
+    showSuccess(input);
+}
+
+const validateUsername = (): void => {
+    checkLength(username, 3, 15);
 }
 
 const validateEmail = (): void => {
@@ -53,17 +61,7 @@ const validateEmail = (): void => {
 }
 
 const validatePassword = (): void => {
-    const input = password.value.trim();
-    if (input.length < 6) {
-        showError(password, 'Password must be at least 6 characters');
-        return;
-    } else if (input.length > 25) {
-        showError(password, 'Password must be less than 25 characters');
-        return;
-    } else {
-        showSuccess(password);
-    }
-
+    checkLength(password, 6, 25);
     validateConfirm();
 }
 

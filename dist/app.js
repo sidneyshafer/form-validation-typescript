@@ -27,19 +27,21 @@ const checkRequired = (inputArr) => {
 const getFieldName = (input) => {
     return input.id.charAt(0).toUpperCase() + input.id.slice(1);
 };
+const checkLength = (input, minLength, maxLength) => {
+    const value = input.value.trim();
+    const name = getFieldName(input);
+    if (value.length < minLength) {
+        showError(input, `${name} must be at least ${minLength} characters`);
+        return;
+    }
+    if (value.length > maxLength) {
+        showError(input, `${name} must be less than ${maxLength} characters`);
+        return;
+    }
+    showSuccess(input);
+};
 const validateUsername = () => {
-    const input = username.value.trim();
-    if (input.length < 3) {
-        showError(username, 'Username must be at least 3 characters');
-        return;
-    }
-    else if (input.length > 15) {
-        showError(username, 'Username must be less than 15 characters');
-        return;
-    }
-    else {
-        showSuccess(username);
-    }
+    checkLength(username, 3, 15);
 };
 const validateEmail = () => {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -51,18 +53,7 @@ const validateEmail = () => {
     }
 };
 const validatePassword = () => {
-    const input = password.value.trim();
-    if (input.length < 6) {
-        showError(password, 'Password must be at least 6 characters');
-        return;
-    }
-    else if (input.length > 25) {
-        showError(password, 'Password must be less than 25 characters');
-        return;
-    }
-    else {
-        showSuccess(password);
-    }
+    checkLength(password, 6, 25);
     validateConfirm();
 };
 const validateConfirm = () => {
